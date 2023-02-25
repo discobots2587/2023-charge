@@ -8,16 +8,17 @@ public class Constants {
         public static final double trackWidth = Units.inchesToMeters(20);
         public static final double wheelBase = Units.inchesToMeters(20);
         public static final double maxVolt = 12.0;
+        public static final double driveMaxVolt = 3.0;
 
         public static final int angleMotorCurrentLimit = 30;
         public static final int driveMotorCurrentLimit = 40;
 
-        public static final double initHeading = 90.0;
+        public static final double initHeading = 0.0;
         
         /* Angle Motor PID Values */
         public static final double angleKP = 0.5;
         public static final double angleKI = 0;
-        public static final double angleKD = 0.005;
+        public static final double angleKD = 0; //0.03
         public static final double angleKFF = 0.0;
         public static final double minVolt = 3.0; //for correcting the eror of a angle motors
         public static final double errorTolerance = 2.5; //in degrees

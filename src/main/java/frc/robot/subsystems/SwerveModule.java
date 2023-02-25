@@ -6,6 +6,7 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.AnalogInput;
 import frc.robot.Constants.Swerve;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 public class SwerveModule {
     public int moduleNumber;
@@ -20,9 +21,10 @@ public class SwerveModule {
     private AnalogEncoder angleEncoder;
 
     private double initAngle, offsetAngle;
-    public double calculatedAngle, opAngle /* oppositeAngle */, errorAngle, lastErrorAngle;
+    public double calculatedAngle, reverseDriveMotor, errorAngle, lastErrorAngle;
     public double inputAngleVoltage, integral, derivative;
     public boolean correctAngle;
+    public double driveSpeed;
 
     public SwerveModule(int moduleNumber, int angleMotorID, int driveMotorID, int threncID) {
         this.moduleNumber = moduleNumber;
@@ -31,6 +33,8 @@ public class SwerveModule {
 
         angleMotor.setSmartCurrentLimit(Swerve.angleMotorCurrentLimit);
         driveMotor.setSmartCurrentLimit(Swerve.driveMotorCurrentLimit);
+
+        driveMotor.setIdleMode(IdleMode.kCoast);
 
         integratedDriveEncoder = driveMotor.getEncoder();
         integratedAngleEncoder = angleMotor.getEncoder();
@@ -72,30 +76,43 @@ public class SwerveModule {
         else if (calculatedAngle < 0) {
           calculatedAngle += 360;
         }
-        if (calculatedAngle >=180) {
-            opAngle = calculatedAngle - 180;
-        }
-        else {
-            opAngle = calculatedAngle + 180;
-        }
     }
 
     public double findError(double target, double current) {
         double error = 0.0;
-        if (target > current) {
-            if (target - current > 180) {
-                error = -1*(360 - target + current); 
+
+        if (target >= current) {
+            //normal
+            error = target - current; 
+            //optimal
+            if (error >= 90) {
+                reverseDriveMotor = -1.0;
+                if (error >= 180) {
+                    error = target - 180 - current;
+                }
+                else if (error >= 90) {
+                    error = -1*(180 - target + current);
+                }
             }
-            else if (target - current < 180) {
-                error = target - current;
+            else {
+                reverseDriveMotor = 1.0;
             }
         }
-        else if (target < current) {
-            if (current - target > 180) {
-                error = (360 - current) + target;
+        else {
+            //normal
+            error = target + 360 - current;
+            //optimal
+            if (error >= 90) {
+                reverseDriveMotor = -1.0;
+                if (error >= 180) {
+                    error = -1*(current - 180 - target);
+                }
+                else {
+                    error = 180 + target - current;
+                }
             }
-            else if (current - target < 180) {
-                error = -1*(current - target);
+            else {
+                reverseDriveMotor = 1.0;
             }
         }
         return error;
@@ -103,15 +120,16 @@ public class SwerveModule {
 
     public void pidController() {
         inputAngleVoltage = errorAngle * Swerve.angleKP; //p
+
         if (Math.abs(errorAngle) >= Swerve.errorTolerance) {
-            integral += errorAngle; //i
+            integral += Math.abs(errorAngle); //i
         }
         derivative = errorAngle - lastErrorAngle; //d
         lastErrorAngle = errorAngle;
+        
+        inputAngleVoltage = -1.0 * (inputAngleVoltage + integral*Swerve.angleKI + derivative*Swerve.angleKD);
 
-        inputAngleVoltage = -1 * (inputAngleVoltage + integral*Swerve.angleKI + derivative*Swerve.angleKD);
-
-        if (inputAngleVoltage > Swerve.maxVolt) {
+        if (Math.abs(inputAngleVoltage) > Swerve.maxVolt) {
             if (errorAngle < 0) {
                 inputAngleVoltage = Swerve.maxVolt;
             }
@@ -119,7 +137,8 @@ public class SwerveModule {
                 inputAngleVoltage = Swerve.maxVolt*-1;
             }
         }
-        if (Math.abs(errorAngle) <= Swerve.errorTolerance || Math.abs(opAngle) <= Swerve.errorTolerance) {
+
+        if (Math.abs(errorAngle) <= Swerve.errorTolerance) {
             inputAngleVoltage = 0;
             correctAngle = true;
         }
@@ -137,4 +156,5 @@ public class SwerveModule {
         angleMotor.setVoltage(inputAngleVoltage);
     }
 
+    
 }

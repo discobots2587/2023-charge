@@ -10,10 +10,9 @@ import frc.robot.Constants.Swerve;
 public class SwerveDrive extends SubsystemBase{
     public SwerveModule[] swerveMods;
 
-    double[] driveSpeed = new double[4];
-    double reverseDriveMotor = 1.0, xAxis2;
+    double xAxis1, yAxis1, xAxis2;
 
-    public double targetHeading = 0, opTargetHeading = 180;
+    public double targetHeading = 0;
 
     public SwerveDrive() {
         swerveMods = new SwerveModule[] {
@@ -24,45 +23,65 @@ public class SwerveDrive extends SubsystemBase{
         };
     }
 
-    public void drive(double xAxis, double yAxis, double xAxis2) {
-        findTargetHeading(xAxis, yAxis);
-        this.xAxis2 = xAxis2;
-        if (Math.abs(this.xAxis2) < Swerve.deadband) {
-            this.xAxis2 = 0;
+    public void test(boolean button1, boolean button2) {
+        if (button1) {
+            swerveMods[0].get_driveMotor().setVoltage(Swerve.driveMaxVolt);
+            swerveMods[1].get_driveMotor().setVoltage(Swerve.driveMaxVolt);
+            swerveMods[2].get_driveMotor().setVoltage(Swerve.driveMaxVolt);
+            swerveMods[3].get_driveMotor().setVoltage(Swerve.driveMaxVolt);
+        }
+        else if (button2) {
+            swerveMods[0].get_driveMotor().setVoltage(-Swerve.driveMaxVolt);
+            swerveMods[1].get_driveMotor().setVoltage(-Swerve.driveMaxVolt);
+            swerveMods[2].get_driveMotor().setVoltage(-Swerve.driveMaxVolt);
+            swerveMods[3].get_driveMotor().setVoltage(-Swerve.driveMaxVolt);
+        }
+    }
+
+    public void drive(double x1, double y1, double x2) {
+        if (Math.abs(x1) < Swerve.deadband) {
+            xAxis1 = 0;
+        }
+        else {
+            xAxis1 = x1;
+        }
+        if (Math.abs(y1) < Swerve.deadband) {
+            yAxis1 = 0;
+        }
+        else {
+            yAxis1 = x1;
+        }
+        findTargetHeading(x1, y1);
+        xAxis2 = x2;
+        if (Math.abs(xAxis2) < Swerve.deadband) {
+            xAxis2 = 0;
         }
 
         for (SwerveModule sm : swerveMods) {
             sm.findAngle();
             sm.errorAngle = sm.findError(targetHeading, sm.calculatedAngle);
-
-            if (sm.errorAngle > sm.findError(targetHeading, sm.opAngle)) { //reverse drive motor
-                sm.errorAngle = sm.findError(targetHeading, sm.opAngle);
-                reverseDriveMotor = -1.0;
-            }
-            else {
-                reverseDriveMotor = 1.0;
-            }
             sm.pidController();
+            
+            //sm.driveSpeed = sm.reverseDriveMotor;
+            
         }
         
-        driveSpeed[0] = (Math.sqrt(Math.pow(xAxis,2)+Math.pow(yAxis,2)) - this.xAxis2)*Swerve.maxVolt*reverseDriveMotor;
-        driveSpeed[1] = (Math.sqrt(Math.pow(xAxis,2)+Math.pow(yAxis,2)) + this.xAxis2)*Swerve.maxVolt*reverseDriveMotor;
-        driveSpeed[2] = (Math.sqrt(Math.pow(xAxis,2)+Math.pow(yAxis,2)) + this.xAxis2)*Swerve.maxVolt*reverseDriveMotor;
-        driveSpeed[3] = (Math.sqrt(Math.pow(xAxis,2)+Math.pow(yAxis,2)) - this.xAxis2)*Swerve.maxVolt*reverseDriveMotor;
+        swerveMods[0].driveSpeed *= (Math.sqrt(Math.pow(xAxis1,2)+Math.pow(yAxis1,2)) - xAxis2)*Swerve.driveMaxVolt*swerveMods[0].reverseDriveMotor;
+        swerveMods[1].driveSpeed *= (Math.sqrt(Math.pow(xAxis1,2)+Math.pow(yAxis1,2)) + xAxis2)*Swerve.driveMaxVolt*swerveMods[1].reverseDriveMotor;
+        swerveMods[2].driveSpeed *= (Math.sqrt(Math.pow(xAxis1,2)+Math.pow(yAxis1,2)) + xAxis2)*Swerve.driveMaxVolt*swerveMods[2].reverseDriveMotor;
+        swerveMods[3].driveSpeed *= (Math.sqrt(Math.pow(xAxis1,2)+Math.pow(yAxis1,2)) - xAxis2)*Swerve.driveMaxVolt*swerveMods[3].reverseDriveMotor;
 
-        for (double d : driveSpeed) {
-            if (d > Swerve.maxVolt) {
-                d = Swerve.maxVolt;
+        for (SwerveModule sm : swerveMods) {
+            if (sm.driveSpeed > Swerve.driveMaxVolt) {
+                sm.driveSpeed = Swerve.driveMaxVolt;
             }
-            else if (d < -Swerve.maxVolt) {
-                d = -Swerve.maxVolt;
+            else if (sm.driveSpeed < -Swerve.driveMaxVolt) {
+                sm.driveSpeed = -Swerve.driveMaxVolt;
+            }
+            if (swerveMods[0].correctAngle && swerveMods[1].correctAngle && swerveMods[2].correctAngle && swerveMods[3].correctAngle) {
+              sm.get_driveMotor().setVoltage(sm.driveSpeed);
             }
         }
-
-        swerveMods[0].get_driveMotor().setVoltage(driveSpeed[0]);
-        swerveMods[1].get_driveMotor().setVoltage(driveSpeed[1]);
-        swerveMods[2].get_driveMotor().setVoltage(driveSpeed[2]);
-        swerveMods[3].get_driveMotor().setVoltage(driveSpeed[3]);
     }
 
     public void findTargetHeading(double xAxis, double yAxis) {
@@ -83,5 +102,10 @@ public class SwerveDrive extends SubsystemBase{
         swerveMods[3].setInitAngle(init);
     }
 
+    public void initEncoders() {
+        for (SwerveModule sm : swerveMods) {
+            sm.get_driveMotor().getEncoder().setPosition(0.0);
+        }
+    }
 
 }
