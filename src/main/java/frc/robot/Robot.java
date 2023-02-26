@@ -64,7 +64,7 @@ public class Robot extends TimedRobot {
     //swerveDrive.test(logitech3.getX());
     swerveDrive.drive(logitech3.getX(), logitech3.getY(), 0);
 
-    swerveDrive.test(logitech3.getRawButton(1), logitech3.getRawButton(2));
+    swerveDrive.test(logitech3.getRawButton(2) || logitech3.getRawButton(3), logitech3.getRawButton(1));
     dashboardSetUp();
   }
 
@@ -80,23 +80,23 @@ public class Robot extends TimedRobot {
     /*SmartDashboard.putNumber("M0 Encoder", swerveDrive.swerveMods[0].get_angleEncoder().getAbsolutePosition());
     SmartDashboard.putNumber("M1 Encoder", swerveDrive.swerveMods[1].get_angleEncoder().getAbsolutePosition());
     SmartDashboard.putNumber("M2 Encoder", swerveDrive.swerveMods[2].get_angleEncoder().getAbsolutePosition());
-    SmartDashboard.putNumber("M3 Encoder", swerveDrive.swerveMods[3].get_angleEncoder().getAbsolutePosition());
-    SmartDashboard.putNumber("Target Angle", swerveDrive.targetHeading);*/
+    SmartDashboard.putNumber("M3 Encoder", swerveDrive.swerveMods[3].get_angleEncoder().getAbsolutePosition());*/
+    /*SmartDashboard.putNumber("Target Angle", swerveDrive.targetHeading);
 
-    /*SmartDashboard.putNumber("M0 Angle", swerveDrive.swerveMods[0].calculatedAngle);
+    SmartDashboard.putNumber("M0 Angle", swerveDrive.swerveMods[0].calculatedAngle);
     SmartDashboard.putNumber("M1 Angle", swerveDrive.swerveMods[1].calculatedAngle);
     SmartDashboard.putNumber("M2 Angle", swerveDrive.swerveMods[2].calculatedAngle);
-    SmartDashboard.putNumber("M3 Angle", swerveDrive.swerveMods[3].calculatedAngle);*/
+    SmartDashboard.putNumber("M3 Angle", swerveDrive.swerveMods[3].calculatedAngle);
     
-    /*SmartDashboard.putNumber("M0 Error", swerveDrive.swerveMods[0].errorAngle);
+    SmartDashboard.putNumber("M0 Error", swerveDrive.swerveMods[0].errorAngle);
     SmartDashboard.putNumber("M1 Error", swerveDrive.swerveMods[1].errorAngle);
     SmartDashboard.putNumber("M2 Error", swerveDrive.swerveMods[2].errorAngle);
     SmartDashboard.putNumber("M3 Error", swerveDrive.swerveMods[3].errorAngle);*/
     
-    /*SmartDashboard.putBoolean("M0 Correct", swerveDrive.swerveMods[0].correctAngle);
+    SmartDashboard.putBoolean("M0 Correct", swerveDrive.swerveMods[0].correctAngle);
     SmartDashboard.putBoolean("M1 Correct", swerveDrive.swerveMods[1].correctAngle);
     SmartDashboard.putBoolean("M2 Correct", swerveDrive.swerveMods[2].correctAngle);
-    SmartDashboard.putBoolean("M3 Correct", swerveDrive.swerveMods[3].correctAngle);*/
+    SmartDashboard.putBoolean("M3 Correct", swerveDrive.swerveMods[3].correctAngle);
 
     /*SmartDashboard.putNumber("M0 volt", swerveDrive.swerveMods[0].inputAngleVoltage);
     SmartDashboard.putNumber("M1 volt", swerveDrive.swerveMods[1].inputAngleVoltage);
@@ -107,6 +107,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("M1 Drive", swerveDrive.swerveMods[1].get_driveMotor().getEncoder().getVelocity());
     SmartDashboard.putNumber("M2 Drive", swerveDrive.swerveMods[2].get_driveMotor().getEncoder().getVelocity());
     SmartDashboard.putNumber("M3 Drive", swerveDrive.swerveMods[3].get_driveMotor().getEncoder().getVelocity());
-  
+    
+    SmartDashboard.putNumber("M0 volt", swerveDrive.swerveMods[0].inputDriveVoltage);
+    
   }
 }

@@ -16,7 +16,7 @@ public class Constants {
         public static final double initHeading = 0.0;
         
         /* Angle Motor PID Values */
-        public static final double angleKP = 0.5;
+        public static final double angleKP = 0;
         public static final double angleKI = 0;
         public static final double angleKD = 0; //0.03
         public static final double angleKFF = 0.0;
