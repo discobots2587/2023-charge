@@ -20,15 +20,12 @@ public class SwerveModule {
     private AnalogInput input;
     private AnalogEncoder angleEncoder;
 
-    private double initAngle, offsetAngle, oppoTarget;
+    private double initAngle, offsetAngle;
     public double calculatedAngle, reverseDriveMotor, errorAngle, lastErrorAngle;
     public double inputAngleVoltage, integral, derivative;
     public boolean correctAngle;
     public double driveSpeed;
-
-    private double driveError, driveIntegral, driveDerivative, lastErrorDrive;
-    public double inputDriveVoltage;
-
+    
     public SwerveModule(int moduleNumber, int angleMotorID, int driveMotorID, int threncID) {
         this.moduleNumber = moduleNumber;
         angleMotor = new CANSparkMax(angleMotorID, MotorType.kBrushless);
@@ -155,30 +152,8 @@ public class SwerveModule {
         }
         return error;
     }
-
-    public double findErrorOptimize(double target, double current) {
-        double error = target - current;
-        if (Math.abs(error) <= 90) {
-            reverseDriveMotor = 1.0;
-        }
-        else if (error >= 270 && error <= 360) {
-            error = 360 - target + current;
-            reverseDriveMotor = 1.0;
-        }
-        else if (error >= -360 && error <= -270) {
-            error = -1*(360+error);
-            reverseDriveMotor = 1.0;
-        }
-        else {
-            oppoTarget = (target + 180) % 360;
-            error = findError(oppoTarget, current);
-            reverseDriveMotor = -1.0;
-        }
-
-        return error;
-    }
-
-    public void pidControllerAngle() {
+    
+    public void pidController() {
         inputAngleVoltage = errorAngle * Swerve.angleKP; //p
 
         if (Math.abs(errorAngle) >= Swerve.errorTolerance) {
@@ -215,22 +190,6 @@ public class SwerveModule {
         }
         angleMotor.setVoltage(inputAngleVoltage);
     }
-    
-    public void pidControllerDrive(double target) {
-        driveError = target - driveMotor.getEncoder().getVelocity();
-        driveIntegral += driveError;
-        driveDerivative = driveError - lastErrorDrive;
-        
-        inputDriveVoltage = driveError*Swerve.driveKP + driveIntegral*Swerve.driveKI + driveDerivative*Swerve.driveKD;
-        
-        if (inputDriveVoltage > Swerve.driveMaxVolt) {
-            inputDriveVoltage = Swerve.driveMaxVolt;
-        }
-        else if (inputDriveVoltage < -Swerve.driveMaxVolt) {
-            inputDriveVoltage = -Swerve.driveMaxVolt;
-        }
 
-        driveMotor.setVoltage(inputDriveVoltage);
-    }
     
 }
