@@ -31,11 +31,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    // We need to invert one side of the drivetrain so that positive voltages
-    // result in both sides moving forward. Depending on how your robot's
-    // gearbox is constructed, you might have to invert the left side instead.
     dashboardSetUp();
-    swerveDrive.setInitHeading(Swerve.initHeading);
+    swerveDrive.setInitHeading(Swerve.initHeading); // sets the initial, starting heading of the robot
     swerveDrive.initEncoders();
   }
 
