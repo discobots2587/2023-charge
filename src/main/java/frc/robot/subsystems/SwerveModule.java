@@ -26,19 +26,37 @@ public class SwerveModule {
     public boolean correctAngle;
     public double driveSpeed;
     
+    /**
+     * Creates a SwerveModule object that represents a corresponding swerve module on the robot
+     * <p>
+     * This object contains methods that can be used to control and calculate wheel heading and speed
+     * <p>
+     * Created objects should be used together as a drivetrain where they can be controlled to move the robot
+     * @param moduleNumber moduleID number
+     * @param angleMotorID CAN Bus ID of the angle motor
+     * @param driveMotorID CAN Bus ID of the drive motor
+     * @param threncID ID of the thriftyBot analog encoder
+     */
     public SwerveModule(int moduleNumber, int angleMotorID, int driveMotorID, int threncID) {
         this.moduleNumber = moduleNumber;
+        // creates an object that will be used to control the motor controller for each motor
         angleMotor = new CANSparkMax(angleMotorID, MotorType.kBrushless);
         driveMotor = new CANSparkMax(driveMotorID, MotorType.kBrushless);
 
+        // sets maximum current each motor can pull
         angleMotor.setSmartCurrentLimit(Swerve.angleMotorCurrentLimit);
         driveMotor.setSmartCurrentLimit(Swerve.driveMotorCurrentLimit);
 
+        // sets drive motor behaviour when motor is neither commanded to move forward or backwards
+        // brake: motor will attempt to stop movement
+        // coast: motor will not attempt to stop, but it will not try to move either
         driveMotor.setIdleMode(IdleMode.kCoast);
 
+        // gets the internal encoder on the drive and angle motor
         integratedDriveEncoder = driveMotor.getEncoder();
         integratedAngleEncoder = angleMotor.getEncoder();
-
+        
+        // gets the thritybot absolute encoder that is reading the turn shaft
         input = new AnalogInput(threncID);
         angleEncoder = new AnalogEncoder(input);
     }
@@ -85,12 +103,15 @@ public class SwerveModule {
         return angleEncoder;
     }
 
+    // below are methods that operate the drivetrain
+
     /**
      * Sets starting angle of the swerve module to define offsets for the angle encoder
      * @param initangle angle of drivetrain when initialized
      */
     public void setInitAngle(double initangle) {
         initAngle = initangle;
+        // sets offset angle for the module
         offsetAngle = angleEncoder.getAbsolutePosition()*360 - initAngle;
     }
 
@@ -104,7 +125,7 @@ public class SwerveModule {
     public void findAngle() {
         calculatedAngle = angleEncoder.getAbsolutePosition()*360 - offsetAngle;
 
-        // uses unit circle to find equivalent angle in the interval [0,360)
+        // uses unit circle to find equivalent angle between 0 and 360
         if (calculatedAngle >= 360) {
           calculatedAngle -= 360;
         }
@@ -113,6 +134,15 @@ public class SwerveModule {
         }
     }
 
+    /**
+     * Finds and returns the error between a target value and the current value. 
+     * This method also changes the direction of the drive motor to meet that value optimally
+     * <p>
+     * This method should be used as part of the drivetrain to control the heading of a module's wheel
+     * @param target desired heading of a module's wheel
+     * @param current current heading of a module's wheel
+     * @return <B>error</B>(difference) between the current and desired heading
+     */
     public double findError(double target, double current) {
         double error = 0.0;
 
