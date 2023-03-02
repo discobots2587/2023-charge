@@ -31,6 +31,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    // We need to invert one side of the drivetrain so that positive voltages
+    // result in both sides moving forward. Depending on how your robot's
+    // gearbox is constructed, you might have to invert the left side instead.
     dashboardSetUp();
     swerveDrive.setInitHeading(Swerve.initHeading);
     swerveDrive.initEncoders();
@@ -79,6 +82,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("M2 Encoder", swerveDrive.swerveMods[2].get_angleEncoder().getAbsolutePosition());
     SmartDashboard.putNumber("M3 Encoder", swerveDrive.swerveMods[3].get_angleEncoder().getAbsolutePosition());
     SmartDashboard.putNumber("Target Angle", swerveDrive.targetHeading);
+
     SmartDashboard.putNumber("M0 Angle", swerveDrive.swerveMods[0].calculatedAngle);
     SmartDashboard.putNumber("M1 Angle", swerveDrive.swerveMods[1].calculatedAngle);
     SmartDashboard.putNumber("M2 Angle", swerveDrive.swerveMods[2].calculatedAngle);
@@ -93,6 +97,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("M1 Correct", swerveDrive.swerveMods[1].correctAngle);
     SmartDashboard.putBoolean("M2 Correct", swerveDrive.swerveMods[2].correctAngle);
     SmartDashboard.putBoolean("M3 Correct", swerveDrive.swerveMods[3].correctAngle);
+    
     SmartDashboard.putNumber("M0 volt", swerveDrive.swerveMods[0].inputAngleVoltage);
     SmartDashboard.putNumber("M1 volt", swerveDrive.swerveMods[1].inputAngleVoltage);
     SmartDashboard.putNumber("M2 volt", swerveDrive.swerveMods[2].inputAngleVoltage);
