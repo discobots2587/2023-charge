@@ -24,9 +24,9 @@ public class Constants {
         public static final double errorTolerance = 2.5; //in degrees
 
         /* Drive Motor PID Values */
-        public static final double driveKP = 0.0;
+        public static final double driveKP = 0.005;
         public static final double driveKI = 0.0;
-        public static final double driveKD = 0.0;
+        public static final double driveKD = 0.0005; //0.0005
         public static final double driveKFF = 0.0;
         }
 

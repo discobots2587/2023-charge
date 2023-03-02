@@ -122,7 +122,7 @@ public class SwerveModule {
     }
 
     public double findErrorOptimize(double target, double current) {
-        double error = target - current;
+        double error = target - current; 
         if (Math.abs(error) <= 90) {
             reverseDriveMotor = 1.0;
         }
@@ -135,11 +135,11 @@ public class SwerveModule {
             reverseDriveMotor = 1.0;
         }
         else {
-            oppoTarget = (target + 180) % 360;
-            error = findError(oppoTarget, current);
+            oppoTarget = (target + 180) % 360; 
+            error = findErrorOptimize(oppoTarget, current); 
             reverseDriveMotor = -1.0;
         }
-
+        
         return error;
     }
 
@@ -181,6 +181,20 @@ public class SwerveModule {
         angleMotor.setVoltage(inputAngleVoltage);
     }
     
+    public void testPID() {
+        if (Math.abs(errorAngle) > Swerve.errorTolerance + 5) {
+            if (errorAngle < 0) {
+                angleMotor.setVoltage(1.0);
+            }
+            else if (errorAngle > 0){
+                angleMotor.setVoltage(-1.0);
+            }
+        }
+        else {
+            angleMotor.setVoltage(0);
+        }
+    }
+
     public void pidControllerDrive(double target) {
         driveError = target - driveMotor.getEncoder().getVelocity();
         driveIntegral += driveError;

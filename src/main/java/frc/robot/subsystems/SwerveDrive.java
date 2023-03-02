@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Mod0;
 import frc.robot.Constants.Mod1;
@@ -24,24 +26,44 @@ public class SwerveDrive extends SubsystemBase{
     }
 
     public void test(boolean button1, boolean button2) {
-        if (button1) {
-            /*swerveMods[0].pidControllerDrive(500);
-            swerveMods[1].pidControllerDrive(500);
-            swerveMods[2].pidControllerDrive(500);
-            swerveMods[3].pidControllerDrive(500);*/
+        /*if (button1) {
+            swerveMods[0].pidControllerDrive(500*swerveMods[0].reverseDriveMotor);
+            swerveMods[1].pidControllerDrive(500*swerveMods[1].reverseDriveMotor);
+            swerveMods[2].pidControllerDrive(500*swerveMods[2].reverseDriveMotor);
+            swerveMods[3].pidControllerDrive(500*swerveMods[3].reverseDriveMotor);
             
         }
         else if (button2) {
-            /*swerveMods[0].pidControllerDrive(-500);
-            swerveMods[1].pidControllerDrive(-500);
-            swerveMods[2].pidControllerDrive(-500);
-            swerveMods[3].pidControllerDrive(-500);*/
+            swerveMods[0].pidControllerDrive(-500*swerveMods[0].reverseDriveMotor);
+            swerveMods[1].pidControllerDrive(-500*swerveMods[1].reverseDriveMotor);
+            swerveMods[2].pidControllerDrive(-500*swerveMods[2].reverseDriveMotor);
+            swerveMods[3].pidControllerDrive(-500*swerveMods[3].reverseDriveMotor);
         }
         else {
-            /*swerveMods[0].get_driveMotor().setVoltage(0);
+            swerveMods[0].get_driveMotor().setVoltage(0);
             swerveMods[1].get_driveMotor().setVoltage(0);
             swerveMods[2].get_driveMotor().setVoltage(0);
-            swerveMods[3].get_driveMotor().setVoltage(0);*/
+            swerveMods[3].get_driveMotor().setVoltage(0);
+        }*/
+        if (button1) {
+            swerveMods[0].get_driveMotor().setVoltage(3.0*swerveMods[0].reverseDriveMotor);
+            swerveMods[1].get_driveMotor().setVoltage(3.0*swerveMods[1].reverseDriveMotor);
+            swerveMods[2].get_driveMotor().setVoltage(3.0*swerveMods[2].reverseDriveMotor);
+            swerveMods[3].get_driveMotor().setVoltage(3.0*swerveMods[3].reverseDriveMotor);
+            
+        }
+        else if (button2) {
+            swerveMods[0].get_driveMotor().setVoltage(-3.0*swerveMods[0].reverseDriveMotor);
+            swerveMods[1].get_driveMotor().setVoltage(-3.0*swerveMods[1].reverseDriveMotor);
+            swerveMods[2].get_driveMotor().setVoltage(-3.0*swerveMods[2].reverseDriveMotor);
+            swerveMods[3].get_driveMotor().setVoltage(-3.0*swerveMods[3].reverseDriveMotor);
+            
+        }
+        else {
+            swerveMods[0].get_driveMotor().setVoltage(0.0);
+            swerveMods[1].get_driveMotor().setVoltage(0.0);
+            swerveMods[2].get_driveMotor().setVoltage(0.0);
+            swerveMods[3].get_driveMotor().setVoltage(0.0);
         }
     }
 
@@ -66,10 +88,12 @@ public class SwerveDrive extends SubsystemBase{
 
         for (SwerveModule sm : swerveMods) {
             sm.findAngle();
-            sm.errorAngle = sm.findError(targetHeading, sm.calculatedAngle);
-            sm.pidControllerAngle();
+            sm.errorAngle = sm.findErrorOptimize(targetHeading, sm.calculatedAngle);
+
+            sm.testPID();
             
         }
+        
         
     }
 
@@ -94,8 +118,10 @@ public class SwerveDrive extends SubsystemBase{
     public void initEncoders() {
 
         for (SwerveModule sm : swerveMods) {
-            //sm.get_angleMotor().restoreFactoryDefaults();
-            //sm.get_driveMotor().restoreFactoryDefaults();
+            sm.get_angleMotor().restoreFactoryDefaults();
+            sm.get_driveMotor().restoreFactoryDefaults();
+            sm.get_angleMotor().setIdleMode(IdleMode.kBrake);
+
             sm.get_driveMotor().getEncoder().setPosition(0.0);
             sm.get_angleMotor().setSmartCurrentLimit(30);
             sm.get_driveMotor().setSmartCurrentLimit(40);
