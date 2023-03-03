@@ -21,7 +21,7 @@ public class SwerveModule {
     private AnalogEncoder angleEncoder;
 
     private double initAngle, offsetAngle, oppoTarget;
-    public double calculatedAngle, reverseDriveMotor, errorAngle, lastErrorAngle;
+    public double calculatedAngle, reverseDriveMotor = 1.0, errorAngle, lastErrorAngle;
     public double inputAngleVoltage, integral, derivative;
     public boolean correctAngle;
     public double driveSpeed;
@@ -79,46 +79,6 @@ public class SwerveModule {
         else if (calculatedAngle < 0) {
           calculatedAngle += 360;
         }
-    }
-
-    public double findError(double target, double current) {
-        double error = 0.0;
-
-        if (target >= current) {
-            //normal
-            error = target - current; 
-            //optimal
-            if (error >= 90) {
-                reverseDriveMotor = -1.0;
-                if (error >= 180) {
-                    error = target - 180 - current;
-                }
-                else if (error >= 90) {
-                    error = -1*(180 - target + current);
-                }
-            }
-            else {
-                reverseDriveMotor = 1.0;
-            }
-        }
-        else {
-            //normal
-            error = target + 360 - current;
-            //optimal
-            if (error >= 90) {
-                reverseDriveMotor = -1.0;
-                if (error >= 180) {
-                    error = -1*(current - 180 - target);
-                }
-                else {
-                    error = 180 + target - current;
-                }
-            }
-            else {
-                reverseDriveMotor = 1.0;
-            }
-        }
-        return error;
     }
 
     public double findErrorOptimize(double target, double current) {

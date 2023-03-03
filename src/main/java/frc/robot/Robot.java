@@ -6,7 +6,8 @@ package frc.robot;
 
 import frc.robot.Constants.Swerve;
 import frc.robot.subsystems.SwerveDrive;
-import edu.wpi.first.wpilibj.Joystick;
+//import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 
 //import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,7 +23,8 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class Robot extends TimedRobot {
   private SwerveDrive swerveDrive = new SwerveDrive();
-  private Joystick logitech3 = new Joystick(0);
+  //private Joystick logitech3 = new Joystick(0);
+  private XboxController xbox1 = new XboxController(0);
   private final Timer m_timer = new Timer();
 
   /**
@@ -62,9 +64,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     //swerveDrive.test(logitech3.getX());
-    swerveDrive.drive(logitech3.getX(), logitech3.getY(), 0);
+    swerveDrive.drive(xbox1.getLeftX(), xbox1.getLeftY(), xbox1.getRightX());
 
-    swerveDrive.test(logitech3.getRawButton(2) || logitech3.getRawButton(3), logitech3.getRawButton(1));
+    
     dashboardSetUp();
   }
 
@@ -80,10 +82,11 @@ public class Robot extends TimedRobot {
     /*SmartDashboard.putNumber("M0 Encoder", swerveDrive.swerveMods[0].get_angleEncoder().getAbsolutePosition());
     SmartDashboard.putNumber("M1 Encoder", swerveDrive.swerveMods[1].get_angleEncoder().getAbsolutePosition());
     SmartDashboard.putNumber("M2 Encoder", swerveDrive.swerveMods[2].get_angleEncoder().getAbsolutePosition());
-    SmartDashboard.putNumber("M3 Encoder", swerveDrive.swerveMods[3].get_angleEncoder().getAbsolutePosition());
+    SmartDashboard.putNumber("M3 Encoder", swerveDrive.swerveMods[3].get_angleEncoder().getAbsolutePosition());*/
+    
     SmartDashboard.putNumber("Target Angle", swerveDrive.targetHeading);
 
-    SmartDashboard.putNumber("M0 Angle", swerveDrive.swerveMods[0].calculatedAngle);
+    /*SmartDashboard.putNumber("M0 Angle", swerveDrive.swerveMods[0].calculatedAngle);
     SmartDashboard.putNumber("M1 Angle", swerveDrive.swerveMods[1].calculatedAngle);
     SmartDashboard.putNumber("M2 Angle", swerveDrive.swerveMods[2].calculatedAngle);
     SmartDashboard.putNumber("M3 Angle", swerveDrive.swerveMods[3].calculatedAngle);
@@ -103,12 +106,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("M2 volt", swerveDrive.swerveMods[2].inputAngleVoltage);
     SmartDashboard.putNumber("M3 volt", swerveDrive.swerveMods[3].inputAngleVoltage);*/
 
-    SmartDashboard.putNumber("M0 Drive", swerveDrive.swerveMods[0].get_driveMotor().getEncoder().getVelocity());
+    /*SmartDashboard.putNumber("M0 Drive", swerveDrive.swerveMods[0].get_driveMotor().getEncoder().getVelocity());
     SmartDashboard.putNumber("M1 Drive", swerveDrive.swerveMods[1].get_driveMotor().getEncoder().getVelocity());
     SmartDashboard.putNumber("M2 Drive", swerveDrive.swerveMods[2].get_driveMotor().getEncoder().getVelocity());
     SmartDashboard.putNumber("M3 Drive", swerveDrive.swerveMods[3].get_driveMotor().getEncoder().getVelocity());
     
-    SmartDashboard.putNumber("M0 volt", swerveDrive.swerveMods[0].inputDriveVoltage);
+    SmartDashboard.putNumber("M0 volt", swerveDrive.swerveMods[0].inputDriveVoltage);*/
     
   }
 }

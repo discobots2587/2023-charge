@@ -12,8 +12,6 @@ import frc.robot.Constants.Swerve;
 public class SwerveDrive extends SubsystemBase{
     public SwerveModule[] swerveMods;
 
-    double xAxis1, yAxis1, xAxis2;
-
     public double targetHeading = 0;
 
     public SwerveDrive() {
@@ -25,76 +23,38 @@ public class SwerveDrive extends SubsystemBase{
         };
     }
 
-    public void test(boolean button1, boolean button2) {
-        /*if (button1) {
-            swerveMods[0].pidControllerDrive(500*swerveMods[0].reverseDriveMotor);
-            swerveMods[1].pidControllerDrive(500*swerveMods[1].reverseDriveMotor);
-            swerveMods[2].pidControllerDrive(500*swerveMods[2].reverseDriveMotor);
-            swerveMods[3].pidControllerDrive(500*swerveMods[3].reverseDriveMotor);
-            
-        }
-        else if (button2) {
-            swerveMods[0].pidControllerDrive(-500*swerveMods[0].reverseDriveMotor);
-            swerveMods[1].pidControllerDrive(-500*swerveMods[1].reverseDriveMotor);
-            swerveMods[2].pidControllerDrive(-500*swerveMods[2].reverseDriveMotor);
-            swerveMods[3].pidControllerDrive(-500*swerveMods[3].reverseDriveMotor);
-        }
-        else {
-            swerveMods[0].get_driveMotor().setVoltage(0);
-            swerveMods[1].get_driveMotor().setVoltage(0);
-            swerveMods[2].get_driveMotor().setVoltage(0);
-            swerveMods[3].get_driveMotor().setVoltage(0);
-        }*/
-        if (button1) {
-            swerveMods[0].get_driveMotor().setVoltage(3.0*swerveMods[0].reverseDriveMotor);
-            swerveMods[1].get_driveMotor().setVoltage(3.0*swerveMods[1].reverseDriveMotor);
-            swerveMods[2].get_driveMotor().setVoltage(3.0*swerveMods[2].reverseDriveMotor);
-            swerveMods[3].get_driveMotor().setVoltage(3.0*swerveMods[3].reverseDriveMotor);
-            
-        }
-        else if (button2) {
-            swerveMods[0].get_driveMotor().setVoltage(-3.0*swerveMods[0].reverseDriveMotor);
-            swerveMods[1].get_driveMotor().setVoltage(-3.0*swerveMods[1].reverseDriveMotor);
-            swerveMods[2].get_driveMotor().setVoltage(-3.0*swerveMods[2].reverseDriveMotor);
-            swerveMods[3].get_driveMotor().setVoltage(-3.0*swerveMods[3].reverseDriveMotor);
-            
-        }
-        else {
-            swerveMods[0].get_driveMotor().setVoltage(0.0);
-            swerveMods[1].get_driveMotor().setVoltage(0.0);
-            swerveMods[2].get_driveMotor().setVoltage(0.0);
-            swerveMods[3].get_driveMotor().setVoltage(0.0);
-        }
-    }
-
     public void drive(double x1, double y1, double x2) {
+        //applying deadband
         if (Math.abs(x1) < Swerve.deadband) {
-            xAxis1 = 0;
-        }
-        else {
-            xAxis1 = x1;
+            x1=0;
         }
         if (Math.abs(y1) < Swerve.deadband) {
-            yAxis1 = 0;
+            y1=0;
         }
-        else {
-            yAxis1 = x1;
+        if (Math.abs(x2) < Swerve.deadband) {
+            x2=0;
         }
+        //convert joystick values to target heading
         findTargetHeading(x1, y1);
-        xAxis2 = x2;
-        if (Math.abs(xAxis2) < Swerve.deadband) {
-            xAxis2 = 0;
-        }
-
+        //setting speed for each angle motors
         for (SwerveModule sm : swerveMods) {
             sm.findAngle();
             sm.errorAngle = sm.findErrorOptimize(targetHeading, sm.calculatedAngle);
-
             sm.testPID();
-            
         }
-        
-        
+        //setting speed for each drive motors
+
+        y1*=-1;
+
+        double frSpeed = Math.sqrt(x1*x1+y1*y1);
+        double flSpeed = Math.sqrt(x1*x1+y1*y1);
+        double blSpeed = Math.sqrt(x1*x1+y1*y1);
+        double brSpeed = Math.sqrt(x1*x1+y1*y1);
+
+        swerveMods[0].get_driveMotor().setVoltage(frSpeed*2.0*swerveMods[0].reverseDriveMotor);
+        swerveMods[1].get_driveMotor().setVoltage(flSpeed*2.0*swerveMods[0].reverseDriveMotor);
+        swerveMods[2].get_driveMotor().setVoltage(blSpeed*2.0*swerveMods[0].reverseDriveMotor);
+        swerveMods[3].get_driveMotor().setVoltage(brSpeed*2.0*swerveMods[0].reverseDriveMotor);
     }
 
     public void findTargetHeading(double xAxis, double yAxis) {
