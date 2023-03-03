@@ -8,7 +8,6 @@ import frc.robot.Constants.Mod1;
 import frc.robot.Constants.Mod2;
 import frc.robot.Constants.Mod3;
 import frc.robot.Constants.Swerve;
-
 public class SwerveDrive extends SubsystemBase{
     public SwerveModule[] swerveMods;
 
@@ -17,9 +16,9 @@ public class SwerveDrive extends SubsystemBase{
     public SwerveDrive() {
         swerveMods = new SwerveModule[] {
             new SwerveModule(0,Mod0.angleMotorID,Mod0.driveMotorID, Mod0.threncID),
-            new SwerveModule(1,Mod1.angleMotorID,Mod1.driveMotorID,Mod1.threncID),
-            new SwerveModule(1,Mod2.angleMotorID,Mod2.driveMotorID, Mod2.threncID),
-            new SwerveModule(1,Mod3.angleMotorID,Mod3.driveMotorID, Mod3.threncID),
+            new SwerveModule(1,Mod1.angleMotorID,Mod1.driveMotorID, Mod1.threncID),
+            new SwerveModule(2,Mod2.angleMotorID,Mod2.driveMotorID, Mod2.threncID),
+            new SwerveModule(3,Mod3.angleMotorID,Mod3.driveMotorID, Mod3.threncID),
         };
     }
 

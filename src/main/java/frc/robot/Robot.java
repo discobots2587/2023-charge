@@ -100,7 +100,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("M1 Correct", swerveDrive.swerveMods[1].correctAngle);
     SmartDashboard.putBoolean("M2 Correct", swerveDrive.swerveMods[2].correctAngle);
     SmartDashboard.putBoolean("M3 Correct", swerveDrive.swerveMods[3].correctAngle);
-
     SmartDashboard.putNumber("M0 volt", swerveDrive.swerveMods[0].inputAngleVoltage);
     SmartDashboard.putNumber("M1 volt", swerveDrive.swerveMods[1].inputAngleVoltage);
     SmartDashboard.putNumber("M2 volt", swerveDrive.swerveMods[2].inputAngleVoltage);
