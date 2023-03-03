@@ -146,46 +146,6 @@ public class SwerveModule {
      * @param current current heading of a module's wheel
      * @return <B>error</B>(difference) between the current and desired heading
      */
-    public double findError(double target, double current) {
-        double error = 0.0;
-
-        if (target >= current) { // when current value is greater than that of the setpoint 
-            //normal
-            error = target - current; 
-            //optimal
-            if (error >= 90) {
-                reverseDriveMotor = -1.0;
-                if (error >= 180) {
-                    error = target - 180 - current;
-                }
-                else if (error >= 90) {
-                    error = -1*(180 - target + current);
-                }
-            }
-            else {
-                reverseDriveMotor = 1.0;
-            }
-        }
-        else { // when current value is less than that of the setpoint 
-            //normal
-            error = target + 360 - current;
-            //optimal
-            if (error >= 90) {
-                reverseDriveMotor = -1.0;
-                if (error >= 180) {
-                    error = -1*(current - 180 - target);
-                }
-                else {
-                    error = 180 + target - current;
-                }
-            }
-            else {
-                reverseDriveMotor = 1.0;
-            }
-        }
-        return error;
-    }
-    
     public double findErrorOptimize(double target, double current) {
         double error = target - current; 
         if (Math.abs(error) <= 90) {
