@@ -206,7 +206,7 @@ public class SwerveModule {
         angleMotor.setVoltage(inputAngleVoltage);
     }
     
-    public void testPID() {
+    public void turnPID() {
         if (Math.abs(errorAngle) > Swerve.errorTolerance + 5) {
             if (errorAngle < 0) {
                 angleMotor.setVoltage(1.0);

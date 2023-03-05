@@ -70,11 +70,17 @@ public class SwerveDrive extends SubsystemBase{
                 switch (sm.moduleNumber) {
                     case 0:
                         moduleAngle = turnAngle*-1;
+                        break;
                     case 1:
                         moduleAngle = turnAngle;
+                        break;
                     case 2:
                         moduleAngle = turnAngle*-1;
+                        break;
                     case 3:
+                        moduleAngle = turnAngle;
+                        break;
+                    default:
                         moduleAngle = turnAngle;
                 }
 
@@ -89,11 +95,17 @@ public class SwerveDrive extends SubsystemBase{
                 switch (sm.moduleNumber) {
                     case 0:
                         moduleAngle = turnAngle*-1;
+                        break;
                     case 1:
                         moduleAngle = turnAngle;
+                        break;
                     case 2:
                         moduleAngle = turnAngle*-1;
+                        break;
                     case 3:
+                        moduleAngle = turnAngle;
+                        break;
+                    default:
                         moduleAngle = turnAngle;
                 }
 
