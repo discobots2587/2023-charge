@@ -1,12 +1,8 @@
 package frc.robot;
 
-import edu.wpi.first.math.util.Units;
-
 public class Constants {
     public static final class Swerve {
         public static final double deadband = 0.1;
-        public static final double trackWidth = Units.inchesToMeters(20);
-        public static final double wheelBase = Units.inchesToMeters(20);
         public static final double maxVolt = 12.0;
         public static final double driveMaxVolt = 3.0;
 
@@ -14,6 +10,11 @@ public class Constants {
         public static final int driveMotorCurrentLimit = 40;
 
         public static final double initHeading = 0.0;
+
+        // Setting turn angle
+        public static final double moduleOffsetInches = 2.625;
+        public static final double chassisWidthInches = 20;
+        public static final double chassisLengthInches = 20;
         
         /* Angle Motor PID Values */
         public static final double angleKP = 0;
