@@ -168,17 +168,23 @@ public class SwerveModule {
         return error;
     }
 
+    /**
+     * Calculates power needed for angle motor as it attempts to hit a setpoint for angle
+     */
     public void pidControllerAngle() {
+        // proportional term:
         inputAngleVoltage = errorAngle * Swerve.angleKP; //p
-
+        // integral term:
         if (Math.abs(errorAngle) >= Swerve.errorTolerance) {
             integral += Math.abs(errorAngle); //i
         }
-        derivative = errorAngle - lastErrorAngle; //d
+        // derivative term:
+        derivative = errorAngle - lastErrorAngle;
         lastErrorAngle = errorAngle;
-        
+        // adds terms together with constant factors
         inputAngleVoltage = -1.0 * (inputAngleVoltage + integral*Swerve.angleKI + derivative*Swerve.angleKD);
 
+        // sets limits on voltage output
         if (Math.abs(inputAngleVoltage) > Swerve.maxVolt) {
             if (errorAngle < 0) {
                 inputAngleVoltage = Swerve.maxVolt;
@@ -188,6 +194,7 @@ public class SwerveModule {
             }
         }
 
+        // applies some tolerance to the error angle
         if (Math.abs(errorAngle) <= Swerve.errorTolerance) {
             inputAngleVoltage = 0;
             correctAngle = true;
@@ -203,10 +210,11 @@ public class SwerveModule {
                 }
             }
         }
+        // output to angle motor
         angleMotor.setVoltage(inputAngleVoltage);
     }
     
-    public void turnPID() {
+    public void turnPIDSimple() {
         if (Math.abs(errorAngle) > Swerve.errorTolerance + 5) {
             if (errorAngle < 0) {
                 angleMotor.setVoltage(1.0);
@@ -236,6 +244,4 @@ public class SwerveModule {
 
         driveMotor.setVoltage(inputDriveVoltage);
     }
-
-    
 }

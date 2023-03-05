@@ -38,7 +38,7 @@ public class SwerveDrive extends SubsystemBase{
         for (SwerveModule sm : swerveMods) {
             sm.findAngle();
             sm.errorAngle = sm.findErrorOptimize(targetHeading, sm.calculatedAngle);
-            sm.turnPID();
+            sm.turnPIDSimple();
         }
         //setting speed for each drive motors
 
@@ -86,7 +86,7 @@ public class SwerveDrive extends SubsystemBase{
 
                 sm.findAngle();
                 sm.errorAngle = sm.findErrorOptimize(moduleAngle, sm.calculatedAngle);
-                sm.turnPID();
+                sm.turnPIDSimple();
                 sm.get_driveMotor().setVoltage(leftTrigger*turnPowerConstant*sm.reverseDriveMotor);
             }
         } else if (rightTrigger > Swerve.deadband) { // right trigger is pressed
@@ -111,7 +111,7 @@ public class SwerveDrive extends SubsystemBase{
 
                 sm.findAngle();
                 sm.errorAngle = sm.findErrorOptimize(moduleAngle, sm.calculatedAngle);
-                sm.turnPID();
+                sm.turnPIDSimple();
                 sm.get_driveMotor().setVoltage(rightTrigger*turnPowerConstant*sm.reverseDriveMotor);
             }
         }
@@ -140,19 +140,28 @@ public class SwerveDrive extends SubsystemBase{
                 Math.sqrt(Math.pow((Swerve.chassisLengthInches/2),2)+Math.pow((Swerve.chassisWidthInches/2),2))
                 ));
     }
-
     
-
+    /**
+     * Sets <B>targetHeading</B> based on controller joystick inputs
+     * @param xAxis
+     * @param yAxis
+     */
     public void findTargetHeading(double xAxis, double yAxis) {
-
+        // converts controller values into angle
         if (Math.abs(xAxis) > Swerve.deadband && Math.abs(yAxis) > Swerve.deadband) {
             targetHeading = Math.atan2(-yAxis, xAxis)*180/Math.PI;
         }
+
+        // sets targetHeading into the 0 to 360 degree range
         if (targetHeading < 0) {
             targetHeading+=360;
         }
     }
-
+    
+    /**
+     * sets initial heading of the swerve drive for the swerve modules
+     * @param init intitial heading of the swerve drive
+     */
     public void setInitHeading(double init) {
         swerveMods[0].setInitAngle(init);
         swerveMods[1].setInitAngle(init);
