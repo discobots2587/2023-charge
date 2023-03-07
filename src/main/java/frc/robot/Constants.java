@@ -1,5 +1,8 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.can.VictorSPXConfiguration;
+
 import edu.wpi.first.math.util.Units;
 
 public class Constants {
@@ -66,7 +69,9 @@ public class Constants {
         public static final int gndJointMotorID = 60;
         public static final int gndRollerMotorID = 61;
 
-        public static final int gndJointMotorCurrentLimit = 40;
-        public static final int gndRollerMotorCurrentLimit = 25;
+        public static final SupplyCurrentLimitConfiguration gndJointMotorCurrentLimit = 
+                            new SupplyCurrentLimitConfiguration(true, 40, 40, 0);
+        public static final VictorSPXConfiguration gndRollerMotorCurrentLimit = 
+                            new VictorSPXConfiguration();
     }
 }
