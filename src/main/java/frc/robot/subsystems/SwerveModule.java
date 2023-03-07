@@ -235,11 +235,11 @@ public class SwerveModule {
         
         inputDriveVoltage = driveError*Swerve.driveKP + driveIntegral*Swerve.driveKI + driveDerivative*Swerve.driveKD;
         
-        if (inputDriveVoltage > Swerve.driveMaxVolt) {
-            inputDriveVoltage = Swerve.driveMaxVolt;
+        if (inputDriveVoltage > Swerve.maxVolt) {
+            inputDriveVoltage = Swerve.maxVolt;
         }
-        else if (inputDriveVoltage < -Swerve.driveMaxVolt) {
-            inputDriveVoltage = -Swerve.driveMaxVolt;
+        else if (inputDriveVoltage < -Swerve.maxVolt) {
+            inputDriveVoltage = -Swerve.maxVolt;
         }
 
         driveMotor.setVoltage(inputDriveVoltage);
