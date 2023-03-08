@@ -5,6 +5,8 @@
 package frc.robot;
 
 import frc.robot.Constants.Swerve;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.GroundIntake;
 import frc.robot.subsystems.SwerveDrive;
 //import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -23,6 +25,8 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class Robot extends TimedRobot {
   private SwerveDrive swerveDrive = new SwerveDrive();
+  private GroundIntake groundIntake = new GroundIntake(true);
+  private Arm arm = new Arm();
   //private Joystick logitech3 = new Joystick(0);
   private XboxController xbox1 = new XboxController(0);
   private final Timer m_timer = new Timer();

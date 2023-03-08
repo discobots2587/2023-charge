@@ -1,24 +1,60 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.Constants;
 
 public class GroundIntake {
 
-    TalonSRX jointMotor;
+    CANSparkMax jointMotor;
     VictorSPX rollerMotor;
 
-    public GroundIntake(int jointMotorID, int rollerMotorID) {
-        jointMotor = new TalonSRX(jointMotorID);
-        rollerMotor = new VictorSPX(rollerMotorID);
+    /*
+     * Is true if the intake is up and false if down
+     */
+    boolean up; 
 
-        jointMotor.configSupplyCurrentLimit(Constants.GroundIntake.gndJointMotorCurrentLimit);
-        //rollerMotor.configAllSettings(Constants.GroundIntake.gndRollerMotorCurrentLimit);
+    /*
+     *
+     */
+    public GroundIntake(boolean up) {
+        jointMotor = new CANSparkMax(Constants.GroundIntake.gndJointMotorID, MotorType.kBrushless);
+        rollerMotor = new VictorSPX(Constants.GroundIntake.gndRollerMotorID);
+        this.up = up;
+        jointMotor.setSmartCurrentLimit(Constants.GroundIntake.gndJointMotorCurrentLimit);
+        //rollerMotor.configAllSettings(Constants.GroundIntake.gndRollerMotorCurrentLimit); //Victors cannot have a current limit
     }
 
-    public TalonSRX getJointMotor() {
+    /* 
+     * @return whether the intake is in the down position 
+     * Method is currently not doing anything
+    */
+    public boolean isDown(){
+        
+        return !up;
+    }
+
+    public void switchPosition() {
+        if(isDown()) {
+            moveUp();
+        } else {
+            moveDown();
+        }
+    }
+
+    protected void moveUp() {
+
+    }
+
+    protected void moveDown() {
+
+    }
+
+    public CANSparkMax getJointMotor() {
         return jointMotor;
     }
 
