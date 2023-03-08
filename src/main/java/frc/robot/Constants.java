@@ -1,8 +1,5 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.can.VictorSPXConfiguration;
-
 import edu.wpi.first.math.util.Units;
 
 public class Constants {
