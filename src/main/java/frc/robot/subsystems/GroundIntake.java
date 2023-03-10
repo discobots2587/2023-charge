@@ -19,7 +19,9 @@ public class GroundIntake {
     /*
      *
      */
-    public GroundIntake(boolean up) {
+    public GroundIntake(boolean up) 
+    {
+
         jointMotor = new CANSparkMax(Constants.GroundIntake.gndJointMotorID, MotorType.kBrushless);
         rollerMotor = new VictorSPX(Constants.GroundIntake.gndRollerMotorID);
         this.up = up;
@@ -27,7 +29,7 @@ public class GroundIntake {
         //rollerMotor.configAllSettings(Constants.GroundIntake.gndRollerMotorCurrentLimit); //Victors cannot have a current limit
     }
 
-    /* 
+    /** 
      * @return whether the intake is in the down position 
      * Method is currently not doing anything
     */
