@@ -4,7 +4,6 @@ public class Constants {
     public static final class Swerve {
         public static final double deadband = 0.1;
         public static final double maxVolt = 12.0;
-        public static final double driveMaxVolt = 3.0;
 
         public static final int angleMotorCurrentLimit = 30;
         public static final int driveMotorCurrentLimit = 40;

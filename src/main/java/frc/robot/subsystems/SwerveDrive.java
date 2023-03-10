@@ -8,7 +8,7 @@ import frc.robot.Constants.Mod1;
 import frc.robot.Constants.Mod2;
 import frc.robot.Constants.Mod3;
 import frc.robot.Constants.Swerve;
-public class SwerveDrive extends SubsystemBase{
+public class SwerveDrive extends SubsystemBase{  
     public SwerveModule[] swerveMods;
 
     public double targetHeading = 0;
@@ -49,10 +49,10 @@ public class SwerveDrive extends SubsystemBase{
         double blSpeed = Math.sqrt(x1*x1+y1*y1);
         double brSpeed = Math.sqrt(x1*x1+y1*y1);
 
-        swerveMods[0].get_driveMotor().setVoltage(frSpeed*2.0*swerveMods[0].reverseDriveMotor);
-        swerveMods[1].get_driveMotor().setVoltage(flSpeed*2.0*swerveMods[1].reverseDriveMotor);
-        swerveMods[2].get_driveMotor().setVoltage(blSpeed*2.0*swerveMods[2].reverseDriveMotor);
-        swerveMods[3].get_driveMotor().setVoltage(brSpeed*2.0*swerveMods[3].reverseDriveMotor);
+        swerveMods[0].get_driveMotor().setVoltage(frSpeed*Swerve.maxVolt*swerveMods[0].reverseDriveMotor);
+        swerveMods[1].get_driveMotor().setVoltage(flSpeed*Swerve.maxVolt*swerveMods[1].reverseDriveMotor);
+        swerveMods[2].get_driveMotor().setVoltage(blSpeed*Swerve.maxVolt*swerveMods[2].reverseDriveMotor);
+        swerveMods[3].get_driveMotor().setVoltage(brSpeed*Swerve.maxVolt*swerveMods[3].reverseDriveMotor);
     }
     
     /**
@@ -87,7 +87,7 @@ public class SwerveDrive extends SubsystemBase{
                 sm.findAngle();
                 sm.errorAngle = sm.findErrorOptimize(moduleAngle, sm.calculatedAngle);
                 sm.turnPIDSimple();
-                sm.get_driveMotor().setVoltage(leftTrigger*turnPowerConstant*sm.reverseDriveMotor);
+                sm.get_driveMotor().setVoltage(Swerve.maxVolt*leftTrigger*turnPowerConstant*sm.reverseDriveMotor);
             }
         } else if (rightTrigger > Swerve.deadband) { // right trigger is pressed
             // Set Angle for each swerve wheel
@@ -112,7 +112,7 @@ public class SwerveDrive extends SubsystemBase{
                 sm.findAngle();
                 sm.errorAngle = sm.findErrorOptimize(moduleAngle, sm.calculatedAngle);
                 sm.turnPIDSimple();
-                sm.get_driveMotor().setVoltage(rightTrigger*turnPowerConstant*sm.reverseDriveMotor);
+                sm.get_driveMotor().setVoltage(Swerve.maxVolt*rightTrigger*turnPowerConstant*sm.reverseDriveMotor);
             }
         }
     }
