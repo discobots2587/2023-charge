@@ -59,7 +59,9 @@ public class Constants {
         public static final int intakeMotorID = 51;
 
         public static final int jointMotorCurrentLimit = 40;
-        public static final int intakeMotorCurrentLimit = 25;
+        //public static final int intakeMotorCurrentLimit = 25;
+
+        public static final double maxAngle = 90;
     }
 
     public static final class GroundIntake {
@@ -67,6 +69,7 @@ public class Constants {
         public static final int gndRollerMotorID = 61;
 
         public static final int gndJointMotorCurrentLimit = 40;
-        public static final int gndRollerMotorCurrentLimit = 25;
+        //public static final SupplyCurrentLimitConfiguration gndJointMotorCurrentLimit = new SupplyCurrentLimitConfiguration(true, 40, 40, 0); // was for TalonSRX
+        //public static final VictorSPXConfiguration gndRollerMotorCurrentLimit = new VictorSPXConfiguration(); //Victors can not apply a current limit
     }
 }

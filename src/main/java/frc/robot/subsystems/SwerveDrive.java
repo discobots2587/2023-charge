@@ -9,6 +9,7 @@ import frc.robot.Constants.Mod2;
 import frc.robot.Constants.Mod3;
 import frc.robot.Constants.Swerve;
 public class SwerveDrive extends SubsystemBase{
+
     public SwerveModule[] swerveMods;
 
     public double targetHeading = 0;
@@ -20,6 +21,7 @@ public class SwerveDrive extends SubsystemBase{
             new SwerveModule(2,Mod2.angleMotorID,Mod2.driveMotorID, Mod2.threncID),
             new SwerveModule(3,Mod3.angleMotorID,Mod3.driveMotorID, Mod3.threncID),
         };
+
     }
 
     public void drive(double x1, double y1, double x2) {
@@ -54,6 +56,7 @@ public class SwerveDrive extends SubsystemBase{
         swerveMods[1].get_driveMotor().setVoltage(flSpeed*2.0*swerveMods[0].reverseDriveMotor);
         swerveMods[2].get_driveMotor().setVoltage(blSpeed*2.0*swerveMods[0].reverseDriveMotor);
         swerveMods[3].get_driveMotor().setVoltage(brSpeed*2.0*swerveMods[0].reverseDriveMotor);
+
     }
 
     public void findTargetHeading(double xAxis, double yAxis) {
