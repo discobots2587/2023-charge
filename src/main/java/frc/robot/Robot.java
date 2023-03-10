@@ -62,8 +62,12 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     //swerveDrive.test(logitech3.getX());
-    swerveDrive.drive(xbox1.getLeftX(), xbox1.getLeftY());
-    swerveDrive.turnTrigger(xbox1.getLeftTriggerAxis(), xbox1.getRightTriggerAxis(), 1);
+    // turn function overrides drive
+    if (xbox1.getLeftTriggerAxis() > Swerve.deadband || xbox1.getRightTriggerAxis() > Swerve.deadband) {
+      swerveDrive.turnTrigger(xbox1.getLeftTriggerAxis(), xbox1.getRightTriggerAxis(), 1);
+    } else {
+      swerveDrive.drive(xbox1.getLeftX(), xbox1.getLeftY());
+    }
     
     dashboardSetUp();
   }
