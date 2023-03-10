@@ -15,7 +15,12 @@ public class GroundIntake {
      * Is true if the intake is up and false if down
      */
     boolean up; 
-
+    
+    public GroundIntake(int jointMotorID, int rollerMotorID) {
+        jointMotor = new CANSparkMax(jointMotorID, MotorType.kBrushless);
+        rollerMotor = new VictorSPX(rollerMotorID);
+    }
+    
     /*
      *
      */
