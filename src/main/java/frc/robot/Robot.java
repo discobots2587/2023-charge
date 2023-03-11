@@ -6,6 +6,8 @@ package frc.robot;
 
 import frc.robot.Constants.Swerve;
 import frc.robot.subsystems.SwerveDrive;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.GroundIntake;
 //import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 
@@ -23,6 +25,8 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class Robot extends TimedRobot {
   private SwerveDrive swerveDrive = new SwerveDrive();
+  private Arm arm = new Arm();
+  private GroundIntake groundIntake = new GroundIntake();
   //private Joystick logitech3 = new Joystick(0);
   private XboxController xbox1 = new XboxController(0);
   private final Timer m_timer = new Timer();
@@ -64,7 +68,11 @@ public class Robot extends TimedRobot {
     //swerveDrive.test(logitech3.getX());
     swerveDrive.drive(xbox1.getLeftX(), xbox1.getLeftY());
     swerveDrive.turnTrigger(xbox1.getLeftTriggerAxis(), xbox1.getRightTriggerAxis(), 1);
-    
+
+    arm.spinArmJoint(xbox1.getLeftTriggerAxis(),xbox1.getLeftBumper());
+    arm.spinArmIntake(xbox1.getYButton(), xbox1.getAButton());
+    groundIntake.spinGroundIntakeJoint(xbox1.getRightTriggerAxis(),xbox1.getRightBumper());
+    groundIntake.spinRoller(xbox1.getPOV());
     dashboardSetUp();
   }
 

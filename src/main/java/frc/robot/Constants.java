@@ -1,6 +1,12 @@
 package frc.robot;
 
 public class Constants {
+
+    public static final class Controller {
+        public static final double triggerDeadband = 0.1;
+        public static final double joystickDeadband = 0.15;
+    }
+
     public static final class Swerve {
         public static final double deadband = 0.1;
         public static final double maxVolt = 12.0;
@@ -52,5 +58,25 @@ public class Constants {
         public static final int driveMotorID = 31;
         public static final int angleMotorID = 30;
         public static final int threncID = 3;
+    }
+
+    public static final class Arm {
+        public static final int jointMotorID = 50;
+        public static final int intakeMotorID = 51;
+        
+        public static final int jointMotorCurrentLimit = 40;
+        public static final int intakeMotorCurrentLimit = 25;
+
+        public static final double armMaxVolt = 12.0;
+    }
+
+    public static final class GroundIntake {
+        public static final int jointMotorID = 60;
+        public static final int rollerMotorID = 61;
+
+        public static final int jointMotorCurrentLimit = 40;
+        public static final int rollerMotorCurrentLimit = 25;
+
+        public static final double groundMaxVolt = 12.0;
     }
 }
